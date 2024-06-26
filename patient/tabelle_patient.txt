@@ -1,0 +1,8 @@
+create table patient (
+  id int not null auto_increment,
+  vorname varchar(20),
+  nachname varchar(20),
+  geburt date,
+  gewicht double,
+  primary key (id)
+);

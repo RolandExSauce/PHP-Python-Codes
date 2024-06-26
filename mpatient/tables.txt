@@ -1,0 +1,109 @@
+--
+-- Tabellenstruktur für Tabelle `pa_besitzt`
+--
+
+CREATE TABLE `pa_besitzt` (
+  `id_besitzt` int(11) NOT NULL,
+  `person_fid` int(11) DEFAULT NULL,
+  `krankheit_fid` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `pa_krankheit`
+--
+
+CREATE TABLE `pa_krankheit` (
+  `id_krankheit` int(11) NOT NULL,
+  `bezeichnung` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `pa_krankheit`
+--
+
+INSERT INTO `pa_krankheit` (`id_krankheit`, `bezeichnung`) VALUES
+(1, 'Herzkreislauferkrankungen'),
+(2, 'Erkrankungen des Atmungssystems'),
+(3, 'Diabetes mellitus'),
+(4, 'Krebserkrankungen'),
+(5, 'Nierenerkrankungen'),
+(6, 'Lebererkrankungen'),
+(7, 'Adipositas');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `pa_person`
+--
+
+CREATE TABLE `pa_person` (
+  `id_person` int(11) NOT NULL,
+  `svnr` varchar(10) DEFAULT NULL COMMENT 'Sozialversicherungsnummer',
+  `vorname` varchar(30) DEFAULT NULL,
+  `nachname` varchar(30) DEFAULT NULL,
+  `geschlecht` varchar(1) DEFAULT NULL COMMENT 'w m k',
+  `gewicht` decimal(5,2) DEFAULT NULL COMMENT 'Gewicht in kg',
+  `staatsbuerger` date DEFAULT NULL COMMENT 'Datum ab wann Österr. Staatsbürger',
+  `zv` tinyint(1) DEFAULT NULL COMMENT 'Zusatzversicherung 1:ja und 0:nein',
+  `essen` int(1) DEFAULT NULL COMMENT 'Zahl von 0 bis 7 als Summe von : 2^0:Abendessen / 2^1:Mittagessen / 2^2:Frühstück'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `pa_besitzt`
+--
+ALTER TABLE `pa_besitzt`
+  ADD PRIMARY KEY (`id_besitzt`),
+  ADD KEY `krankheit_fid` (`krankheit_fid`),
+  ADD KEY `patient_fid` (`person_fid`);
+
+--
+-- Indizes für die Tabelle `pa_krankheit`
+--
+ALTER TABLE `pa_krankheit`
+  ADD PRIMARY KEY (`id_krankheit`);
+
+--
+-- Indizes für die Tabelle `pa_person`
+--
+ALTER TABLE `pa_person`
+  ADD PRIMARY KEY (`id_person`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `pa_besitzt`
+--
+ALTER TABLE `pa_besitzt`
+  MODIFY `id_besitzt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT für Tabelle `pa_krankheit`
+--
+ALTER TABLE `pa_krankheit`
+  MODIFY `id_krankheit` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT für Tabelle `pa_person`
+--
+ALTER TABLE `pa_person`
+  MODIFY `id_person` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- Constraints der exportierten Tabellen
+--
+
+--
+-- Constraints der Tabelle `pa_besitzt`
+--
+ALTER TABLE `pa_besitzt`
+  ADD CONSTRAINT `pa_besitzt_ibfk_1` FOREIGN KEY (`krankheit_fid`) REFERENCES `pa_krankheit` (`id_krankheit`),
+  ADD CONSTRAINT `pa_besitzt_ibfk_2` FOREIGN KEY (`person_fid`) REFERENCES `pa_person` (`id_person`);
+COMMIT;
